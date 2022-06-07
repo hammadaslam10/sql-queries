@@ -1,0 +1,33 @@
+--Lab 14
+--Scalar Function: Takes one or more parameters and returns a single value
+-- Variable: @
+Create function sales.NetSale(
+	@quantity int,
+	@list_price dec(10,2),
+	@discount dec(4,2)
+)
+returns dec (10,2)
+as begin return @quantity * @list_price * (1 - @discount);
+END;
+
+select sales.NetSale(10,100,0.1) net_sale; --for checking function
+
+select order_id, sum(sales.NetSale(quantity,list_price,discount)) net_amount
+from sales.order_items group by order_id
+order by net_amount desc;
+
+--Lab 15 (AdventureWorks)
+
+select * from sales.SalesOrderHeader;
+
+select SalesOrderID, OrderDate, DATEADD(month,6,OrderDate) as Plus6MOnths from Sales.SalesOrderHeader;
+
+select SpecialOfferID,Description,MinQty * DiscountPct as Discount from Sales.SpecialOffer;
+
+select ProductID, ISNULL(Color,'No Color') as Color, Name from Production.Product;
+
+select ProductID, Name + ISNULL(': ' + Color, '') as NameColor from Production.Product;
+
+select MaxQty,DiscountPct from Sales.SpecialOffer;
+
+select SpecialOfferID, Description, ISNULL(MaxQty,10) * DiscountPct as Both from Sales.SpecialOffer

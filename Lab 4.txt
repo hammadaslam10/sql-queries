@@ -1,0 +1,37 @@
+select * from person.person;
+select * from person.Person where title is null;
+select * from person.Person where title is not null;
+select * from HumanResources.Employee;
+select NationalIDNumber,LoginID,JobTitle from HumanResources.Employee Order by 1;
+select NationalIDNumber as CitizenID,LoginID as LoginName from HumanResources.Employee Order by CitizenID;
+select NationalIDNumber,Gender from HumanResources.Employee where Gender = 'M' order by 1;
+select count(*) as Total_Number_Of_Rows from HumanResources.Employee;
+select BusinessEntityID,FirstName +' '+ LastName as FullName from Person.Person;
+select concat(firstname, lastname) from Person.Person;
+--two concat argument in oracle and sql has three argument
+--Oracle query:
+--select BusinessEntityID, concat(firstname, concat(' ',lastname)) as FullName from Person.Person;
+--Sql:
+select BusinessEntityID, concat(firstname,' ',lastname) as FullName from Person.Person;
+select * from HumanResources.Department;
+select name,groupname from HumanResources.Department where GroupName Like '%Manufacturing';
+select * from HumanResources.Employee;
+--OR Operator alternative = IN
+select * from HumanResources.Employee where OrganizationLevel IN (2,3);
+select * from HumanResources.Employee where JobTitle like 'Facilities Manager';
+select * from HumanResources.Employee where JobTitle like '%Manager';
+select * from HumanResources.Employee where JobTitle like '%Control%';
+select * from HumanResources.Employee where JobTitle like 'Research%';
+select * from HumanResources.Employee where JobTitle like '%er';
+select * from HumanResources.Employee where JobTitle like '_a%';
+select * from HumanResources.Employee where BirthDate > '1/1/1980';
+select * from HumanResources.Employee where BirthDate between '1/1/1970' and '1/1/1980' order by BirthDate;
+select * from HumanResources.Employee where BirthDate = '2/11/1974';
+--Calculated columns
+select * from Production.Product;
+select name, listprice from Production.Product;
+select name, listprice, ListPrice+10 as NewListPrice from Production.Product;
+--making new table for testing of calculation:
+select name, listprice, ListPrice+10 as NewListPrice into Production.Product_2 from Production.Product;
+select * from Production.Product_2;
+--next lecture from temporary table

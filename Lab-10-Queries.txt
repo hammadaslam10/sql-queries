@@ -1,0 +1,95 @@
+Schema in SQL Server:
+
+A schema is a collection of database objects including tables, views, triggers, stored procedures, indexes, etc. A schema is associated with a username which is known as the schema owner, who is the owner of the logically related database objects.
+
+A schema always belongs to one database. On the other hand, a database may have one or multiple schemas. For example, in our BikeStores sample database, we have two schemas: sales and production. An object within a schema is qualified using the schema_name.object_name format like sales.orders. Two tables in two schemas can share the same name so you may have hr.employees and sales.employees.
+
+SQL Server provides us with some pre-defined schemas which have the same names as the built-in database users and roles, for example: dbo, guest, sys, and INFORMATION_SCHEMA
+
+
+>CREATE SCHEMA production;
+go
+
+>CREATE SCHEMA sales;
+go
+-----------------
+
+>CREATE TABLE production_1.categories (
+	category_id INT IDENTITY (1, 1) PRIMARY KEY,
+	category_name VARCHAR (255) NOT NULL
+);
+
+PRIMARY KEY:
+A primary key is a column or a group of columns that uniquely identifies each row in a table. You create a primary key for a table by using the PRIMARY KEY constraint. Each table can contain only one primary key. SQL Server automatically sets the NOT NULL constraint for all the primary key columns if the NOT NULL constraint is not specified for these columns.
+
+syntax:
+IDENTITY (seed/root, increment):
+
+In this syntax:
+
+The seed is the value of the first row loaded into the table.
+The increment is the incremental value added to the identity value of the previous row.
+
+The default value of seed and increment is 1 i.e., (1,1). It means that the first row, which was loaded into the table, will have the value of one, the second row will have the value of 2 and so on.
+
+Suppose, you want the value of the identity column of the first row is 10 and incremental value is 10, you use the following syntax:
+
+IDENTITY (value?, value?)
+
+------------------------------------
+
+>CREATE TABLE production_1.brands (
+	brand_id INT IDENTITY (1, 1) PRIMARY KEY,
+	brand_name VARCHAR (255) NOT NULL
+);
+
+>CREATE TABLE production_1.products (
+	product_id INT IDENTITY (1, 1) PRIMARY KEY,
+	product_name VARCHAR (255) NOT NULL,
+	brand_id INT NOT NULL,
+	category_id INT NOT NULL,
+	model_year SMALLINT NOT NULL,
+	list_price DECIMAL (10, 2) NOT NULL,
+	FOREIGN KEY (category_id) REFERENCES production.categories (category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (brand_id) REFERENCES production.brands (brand_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+FOREIGN KEY:
+A foreign key is a column or a group of columns in one table that uniquely identifies a row of another table
+
+
+ON DELETE CASCADE ON UPDATE CASCADE:
+
+The ON UPDATE and ON DELETE specify which action will execute when a row in the parent table is updated and deleted. The following are permitted actions : NO ACTION, CASCADE, SET NULL, and SET DEFAULT
+
+INSERT INTO production_1.brands(brand_name) VALUES('Electra')
+INSERT INTO production_1.brands(brand_name) VALUES('Haro')
+INSERT INTO production_1.brands(brand_name) VALUES('Heller')
+
+--
+INSERT INTO production_1.brands(brand_name) output inserted.brand_id, inserted.brand_name values ('Pure Cycles')
+
+
+select * from production_1.brands;
+
+
+CREATE TABLE production_A.test(
+	salary DECIMAL(8,2) DEFAULT 5000,
+	hire_date DATE DEFAULT '2010-05-20' ,
+	birthdate DATE DEFAULT GETDATE()
+)
+ 
+INSERT INTO production_1.test VALUES (DEFAULT, DEFAULT, DEFAULT)
+ 
+SELECT *  FROM production_1.test
+
+
+
+
+
+
+
+
+
+

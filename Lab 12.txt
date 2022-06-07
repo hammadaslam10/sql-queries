@@ -1,0 +1,44 @@
+Add column:
+CREATE TABLE sales.quotations (
+    quotation_no INT IDENTITY PRIMARY KEY,
+    valid_from DATE NOT NULL,
+    valid_to DATE NOT NULL
+);
+
+
+ALTER TABLE sales.quotations ADD quotation_description VARCHAR (255) NOT NULL;
+
+
+ALTER TABLE sales.quotations ADD 
+	amount DECIMAL (10, 2) NOT NULL,
+    customer_name VARCHAR (50) NOT NULL;
+
+
+select * from sales.quotations;
+
+Drop table:
+
+CREATE TABLE sales.delivery (
+    delivery_id INT PRIMARY KEY,
+    delivery_note VARCHAR (255) NOT NULL,
+    delivery_date DATE NOT NULL
+);
+
+DROP TABLE sales.delivery;
+
+
+
+Truncate  table:
+
+CREATE TABLE sales.customer_groups (
+    group_id INT PRIMARY KEY IDENTITY,
+    group_name VARCHAR (50) NOT NULL
+);
+
+INSERT INTO sales.customer_groups (group_name)
+VALUES ('Intercompany'), ('Third Party'), ('One time');
+
+select * from sales.customer_groups;
+
+
+TRUNCATE TABLE sales.customer_groups;

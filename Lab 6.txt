@@ -1,0 +1,29 @@
+create table my_employee(
+emp_id int,
+emp_firstname varchar(30),
+emp_lastname varchar(30) 
+);
+
+--Insert into table
+insert into my_employee (emp_id, emp_firstname,emp_lastname) values (1,'ABC','XYZ');
+insert into my_employee (emp_id, emp_firstname,emp_lastname) values (2,'Ali','Ahmed');
+insert into my_employee values (3,'Ahmed','Rizwan');
+select * from my_employee;
+--default schema is dbo. Database objects are tables, entities etc.
+select * from dbo.my_employee;
+
+
+create table my_salary(
+emp_id int,
+emp_salary float
+);
+
+insert into my_salary values (1,10000);
+insert into my_salary values (2,8000);
+insert into my_salary values (3,6000);
+
+select * from my_salary;
+select * from my_employee A inner join 
+my_salary B on A.emp_id = B.emp_id;
+select A.emp_id,emp_firstname,emp_lastname,emp_salary from my_employee A inner join 
+my_salary B on A.emp_id = B.emp_id;

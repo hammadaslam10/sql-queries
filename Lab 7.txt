@@ -1,0 +1,41 @@
+select * from sales.customers;
+select * from sales.orders;
+select * from sales.stores;
+select * from sales.order_items;
+select * from production.brands;
+select * from production.categories;
+select * from production.products;
+select * from production.stocks;
+
+select city,first_name from sales.customers order by city,first_name;
+select count(*) from sales.customers;
+--count = aggregrate function
+select city,first_name,last_name from sales.customers order by state;
+select first_name,Len(first_name) as Length_first from sales.customers order by Len(first_name) desc;
+--sorts by length of name^
+
+select
+	customer_id,
+	Year (order_date) order_year
+from
+	sales.orders
+where
+	customer_id In (1,2)
+Order by
+	customer_id;
+
+select customer_id, Year (order_date) order_year
+from sales.orders
+where customer_id In (1,2)
+group by customer_id, year(order_date) --group up eliminates repetition
+order by customer_id;
+
+
+select sum(list_price) from production.products;
+select avg(list_price) from production.products;
+select max(list_price) from production.products;
+select min(list_price) from production.products;
+--length,sum,avg,min,max,count
+
+--to get row of the maximum list_price/aggregate function, we use subqueries
+select product_id,product_name,list_price from production.products where list_price = ( select max(list_price) from production.products);

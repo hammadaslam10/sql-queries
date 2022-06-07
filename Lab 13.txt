@@ -1,0 +1,76 @@
+--Lab 13
+Create table sales.contr (
+contract_no int identity primary key,
+start_date date not null,
+expired_date date,
+customer_id int,
+amount decimal (10,2)
+);
+
+exec sp_rename 'sales.contr', 'contracts';
+
+select * from sales.contracts
+
+--views: virtual tables, always made at the top of the window like procedures
+
+create view sales.daily_sales
+as
+select 
+	year(order_date) as y,
+	month(order_date) as m,
+	day(order_date) as d,
+	p.product_id,
+	product_name,
+	quantity * i.list_price as sales
+	from sales.orders as o
+	inner join sales.order_items as i
+	on o.order_id = i.order_id
+	inner join production.products as p
+	on p.product_id = i.product_id;
+
+select * from sales.daily_sales order by y,m,d,product_name;
+--task: create view, only select those who have model 2016 and list_price is 379.99
+
+select * from production.products
+
+create view production.model2016
+as
+select product_id,product_name,model_year,list_price from production.products where model_year = 2016 and list_price = 379.99
+
+select * from production.model2016
+
+--check constraint: condition made during create table after which if the condition is true then row is inserted else not 
+
+create table products(
+	product_id int identity primary key,
+	product_name varchar(255) not null,
+	unit_price dec(10,2) check (unit_price > 0)
+);
+--assignment 1: alter views ( with create or alter view)
+insert into products (product_name, unit_price) values ('Awesome Free Bike',0);
+
+insert into products (product_name, unit_price) values ('Awesome Free Bike',56);
+
+select * from products;
+
+--check(discounted price < unit_price) = table constraint
+
+create table products_1(
+	product_id int identity primary key,
+	product_name varchar(255) not null,
+	unit_price dec(10,2) check (unit_price > 0), -- column constraint
+	discounted_price dec(10,2) check (discounted_price > 0), -- column constraint
+	check (discounted_price < unit_price) --table constraint
+);
+
+--Assignment 2:
+--Add check constraints to an existing table
+--Add a new column with a check constraint
+--Remove Check constraint
+--Disable Check constraint for insert or update
+
+--Assignment 3:
+-- create table which consists of unique key column and three other columns which have following data type respectively
+--TIME
+--date
+--datetime2
